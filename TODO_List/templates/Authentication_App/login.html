@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% extends 'base.html' %} {% block body_block %} {% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+<form class="mt-3" method="POST">
+  <h2>Login</h2>
+  <hr />
+  <div id="div_id_username" class="mb-3">
+    <label for="id_username" class="form-label requiredField"> Username </label>
+    <input
+      type="text"
+      name="username"
+      maxlength="150"
+      class="textinput textInput form-control"
+      required
+      id="id_username"
+    />
+  </div>
+  <div id="div_id_password" class="mb-3">
+    <label for="id_password" class="form-label requiredField"> Password </label>
+    <input
+      type="text"
+      name="password"
+      maxlength="128"
+      class="textinput textInput form-control"
+      required
+      id="id_password"
+    />
+  </div>
+  {% csrf_token %}
+  <button class="btn btn-primary" action="submit">Login</button>
+</form>
+{% endblock %}
