@@ -34,7 +34,7 @@
             </li>
             {% if request.user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'Authentication_App:home_page' %}">List</a>
+              <a class="nav-link" href="{% url 'Todos_App:list_page' pk=user.id %}">List</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'Authentication_App:logout_page' %}">Logout</a>
