@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 <form class="mt-3" enctype="multipart/form-data" method="POST">
   <h2>Signup</h2>
-  <hr>
+  <hr />
   {{user_form| crispy}} {{image_form| crispy}} {% csrf_token %}
   <button class="btn btn-primary" action="submit">Signup</button>
 </form>

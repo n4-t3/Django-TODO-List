@@ -1,28 +1,71 @@
 <!DOCTYPE html>
-{% extends 'base.html' %} {% block body_block %} 
-    {% if tasks %}
-    <div class="mt-4 p-5 bg-light text-body rounded">
-    <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">TODO List</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ul>
-          {%for task in tasks %}
-              <tr>
-              <td><li>{{task}}</li></td>
-              </tr>
-          {% endfor %}
-          </ul>
-        </tbody>
-      </table>
-    </div>
-      {% else %}
-      <div class="mt-4 p-5 bg-light text-body rounded">
-        <h1>No TODOs Found</h1>
-        <p>Go ahead and create your first task!</p>
-      </div>
-      {% endif %}
+{% extends 'base.html' %} {% block body_block %} {% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+<div class="mt-4 p-5 bg-light text-body rounded">
+  {% if form_update %}
+  <form
+    class="form-inline my-2 my-lg-0"
+    action="{% url 'Todos_App:list_page' pk=user.id id=task_id %}"
+    method="POST"
+  >
+    {{add_tasks_form| crispy}} {% csrf_token %}
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+      Add
+    </button>
+  </form>
+  {% else %}
+  <form
+    class="form-inline my-2 my-lg-0"
+    action="{% url 'Todos_App:list_page' pk=user.id id=0 %}"
+    method="POST"
+  >
+    {{add_tasks_form| crispy}} {% csrf_token %}
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+      Add
+    </button>
+  </form>
+  {% endif %}
+  {% if tasks %}
+
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">TODO List</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for task in tasks %}
+      <tr>
+        <td class="lead">{{task}}</td>
+        <td>
+          <a class="btn" href="{% url 'Todos_App:edit_task' task.id %}"
+            ><i class="fa-solid fa-pen-to-square text-info"></i
+          ></a>
+        </td>
+        <td>
+          <form
+            action="{% url 'Todos_App:delete_task' task.id %}"
+            method="POST"
+          >
+            {% csrf_token %}
+            <button type="submit" class="btn">
+              <i class="fa-solid fa-trash text-danger"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="container">
+  <h1 class="display-2">No TODOs Found</h1>
+  <hr>
+  <p class="lead">Go ahead and create your first task!</p>
+</div>
+  {% endif %}
+</div>
+
 {% endblock %}
