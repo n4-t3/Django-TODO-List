@@ -15,24 +15,24 @@ def list_page(request, pk, id):
     user = Person.objects.get(user_id=pk)
     if str(request.user) != str(user.user.username):
         return HttpResponseForbidden('Access Restricted!')
-    user_task = models.Todo.objects.filter(user_id=pk)
+    user_task = models.Todo.objects.filter(user_id=pk).order_by('id')
     my_dict = {
         "tasks": user_task,
         'add_tasks_form': forms.CreateTaskForm,
         'form_update': False
     }
     if request.method == 'POST':
-        if id==0:
+        if id == 0:
             task_form = forms.CreateTaskForm(request.POST)
         else:
             user_task = models.Todo.objects.get(id=id)
-            task_form = forms.CreateTaskForm(request.POST,instance=user_task)
+            task_form = forms.CreateTaskForm(request.POST, instance=user_task)
         if task_form.is_valid():
             task = task_form.save(commit=False)
             user = Person.objects.get(user_id=request.user.id)
             task.user = user
             task.save()
-            return redirect('Todos_App:list_page',pk=pk,id=0)
+            return redirect('Todos_App:list_page', pk=pk, id=0)
         else:
             return HttpResponseRedirect(reverse('Authentication_App:error_page'))
     return render(request, 'Todos_App/todos.html', context=my_dict)
@@ -45,7 +45,7 @@ def delete_task(request, id):
     if task.user.user.id == user:
         task.delete()
         request.method = 'GET'
-        return redirect('Todos_App:list_page',pk=user, id=0)
+        return redirect('Todos_App:list_page', pk=user, id=0)
     else:
         return HttpResponseForbidden('Access Restricted!')
 
@@ -57,9 +57,8 @@ def edit_task(request, id):
     if task.user.user.id == user:
         form = forms.CreateTaskForm(instance=task)
         user_task = models.Todo.objects.filter(user_id=user)
-        # task.delete()
         my_dict = {
-            "task_id":task.id,
+            "task_id": task.id,
             "tasks": user_task,
             'add_tasks_form': form,
             'form_update': True
