@@ -12,7 +12,10 @@
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><p class="card-text">Email: {{ email }}</p></li>
         <li class="list-group-item"><p class="card-text">Number of Tasks: {{ number_of_tasks }}</p></li>
-        <li class="list-group-item"><a href="{% url 'Authentication_App:delete_user' pk=user.id %}" class="btn btn-danger">Delete Profile</a></li>
+        <li class="list-group-item">
+          <a href="{% url 'Authentication_App:edit_user' pk=user.id %}" class="btn btn-warning">Edit Profile</a>
+          <a href="{% url 'Authentication_App:delete_user' pk=user.id %}" class="btn btn-danger">Delete Profile</a>
+        </li>
       </ul>
   </div>
 </div>
