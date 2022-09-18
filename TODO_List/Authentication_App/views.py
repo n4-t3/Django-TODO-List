@@ -2,17 +2,16 @@ from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect,HttpResponseForbidden
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from . import forms
 from django.contrib.auth import authenticate, login, logout
 from Authentication_App.models import Person
 from Todos_App.models import Todo
 from django.contrib.auth.models import User
-
+from django.contrib import messages
 
 def index(request):
     return render(request, 'home.html', {})
-
 
 def error_page(request):
     return render(request, 'error.html', {})
@@ -40,7 +39,17 @@ def signup_page(request):
             return HttpResponseRedirect(reverse('Authentication_App:login_page'))
 
         else:
-            return HttpResponseRedirect(reverse('Authentication_App:error_page'))
+            if user_form.errors:
+                for field1 in user_form.errors.as_data():
+                    for error1 in user_form.errors.as_data()[field1]:
+                        messages.error(request,f"{field1} {error1}")
+                return redirect('Authentication_App:signup_page')
+
+            if image_form.errors:
+                for field2 in image_form.errors.as_data():
+                    for error2 in image_form.errors.as_data()[field2]:
+                        messages.error(request,f"{field2} {error2}")
+            return redirect('Authentication_App:signup_page')
     return render(request, 'Authentication_App/signup.html', context=my_dict)
 
 
@@ -57,7 +66,8 @@ def login_page(request):
             else:
                 return HttpResponse('ACCOUNT NOT ACTIVE')
         else:
-            return HttpResponseRedirect(reverse('Authentication_App:error_page'))
+            messages.error(request,"username or password is incorrect!")
+            return redirect('Authentication_App:login_page')
     else:
         return render(request,'Authentication_App/login.html',{})
 
@@ -96,7 +106,16 @@ def edit_user(request,pk):
             pre_save_image.save()
             return HttpResponseRedirect(reverse('Authentication_App:login_page'))
         else:
-            return HttpResponseRedirect(reverse('Authentication_App:error_page'))
+            if sent_user_form.errors:
+                for field1 in sent_user_form.errors.as_data():
+                    for error1 in sent_user_form.errors.as_data()[field1]:
+                        messages.error(request,f"{field1} {error1}")
+                return redirect('Authentication_App:edit_user',pk=pk)
+            if sent_image_form.errors:
+                for field2 in sent_image_form.errors.as_data():
+                    for error2 in sent_image_form.errors.as_data()[field2]:
+                        messages.error(request,f"{field2} {error2}")
+            return redirect('Authentication_App:edit_user',pk=pk)
     return render(request,'Authentication_App/signup.html',context=my_dict)
 
 @login_required
