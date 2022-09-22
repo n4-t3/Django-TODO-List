@@ -126,10 +126,15 @@ def profile_page(request,pk):
     number_of_tasks = len(Todo.objects.filter(user_id=pk))
     my_dict={
         'username':user.user.username,
-        'image_path': user.profile_pic.name,
         'email': user.user.email,
         'number_of_tasks': number_of_tasks
     }
+    if not user.profile_pic.name:
+        my_dict['image_path'] = "/profile_pics/default.jpg"
+    try:
+        my_dict['image_path'] = user.profile_pic.name
+    except:
+        pass
     return render(request,'Authentication_App/profile.html',context=my_dict)
 
 @login_required
@@ -137,6 +142,9 @@ def delete_user(request,pk):
     user = Person.objects.get(user_id=pk)
     if str(request.user) != str(user.user.username):
         return HttpResponseForbidden('Access Restricted!')
+    list_of_tasks = Todo.objects.filter(user=user)
+    for task in list_of_tasks:
+        task.delete()
     u = User.objects.get(username = user.user.username)
     u.delete()
     return HttpResponseRedirect(reverse('Authentication_App:login_page'))

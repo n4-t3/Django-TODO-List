@@ -12,7 +12,7 @@ from django.shortcuts import redirect
 
 @login_required
 def list_page(request, pk, id):
-    user = Person.objects.get(user_id=pk)
+    user = Person.objects.get(pk=pk)
     if str(request.user) != str(user.user.username):
         return HttpResponseForbidden('Access Restricted!')
     user_task = models.Todo.objects.filter(user_id=pk).order_by('id')
@@ -29,8 +29,9 @@ def list_page(request, pk, id):
             task_form = forms.CreateTaskForm(request.POST, instance=user_task)
         if task_form.is_valid():
             task = task_form.save(commit=False)
-            user = Person.objects.get(user_id=request.user.id)
             task.user = user
+            print('--------------------------------------------------')
+            print(task.tasks)
             task.save()
             return redirect('Todos_App:list_page', pk=pk, id=0)
         else:
