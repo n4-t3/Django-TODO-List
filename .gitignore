@@ -1,5 +1,5 @@
-/env
+./env
 .env
-/TODO_List/*/__pycache__/
-/TODO_List/media/profile_pics/*
-/TODO_List/db.sqlite3
+./TODO_List/*/__pycache__/
+./TODO_List/media/profile_pics/*
+./TODO_List/db.sqlite3
