@@ -1,0 +1,44 @@
+name: Docker CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create an empty .env file
+        run: touch .env
+
+      - name: Populate .env from secret
+        run: echo "${{ secrets.ENV_FILE }}" > .env
+
+      - name: Build Docker Compose image
+        run: docker-compose build
+
+      - name: Start Docker Compose services
+        run: docker-compose up -d
+
+      - name: Stop Docker Compose services
+        run: docker-compose down
+
+      - name: Install Test Requirements
+        run: pip install -r test-requirements.txt
+
+      - name: Run Pylint
+        run: |
+          pylint_output=$(pylint blog/**/*.py)
+          echo "$pylint_output"
+          if [[ "$pylint_output" == *"10.00/10"* ]]; then
+            echo "Pylint check passed"
+          else
+            echo "Pylint check failed"
+            exit 1
+          fi
