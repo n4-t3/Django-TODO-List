@@ -33,12 +33,4 @@ jobs:
         run: pip install -r test-requirements.txt
 
       - name: Run Pylint
-        run: |
-          pylint_output=$(pylint TODO_List/**/*.py)
-          echo "$pylint_output"
-          if [[ "$pylint_output" == *"10.00/10"* ]]; then
-            echo "Pylint check passed"
-          else
-            echo "Pylint check failed"
-            exit 1
-          fi
+        run: pylint TODO_List/**/*.py
