@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Pylint
         run: |
-          pylint_output=$(pylint blog/**/*.py)
+          pylint_output=$(pylint TODO_List/**/*.py)
           echo "$pylint_output"
           if [[ "$pylint_output" == *"10.00/10"* ]]; then
             echo "Pylint check passed"
