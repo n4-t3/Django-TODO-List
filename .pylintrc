@@ -131,6 +131,7 @@ disable=C0103,  # Disable naming convention errors (e.g., variable names)
         R0801,  # Disabled similar lines in 2 files
         R1714,  # Diabled consider merging these comparisons
         W0311,  # Bad indentation.
+        E0401,  # Unable to import
 # Naming style matching correct argument names.
 argument-naming-style=snake_case
 
