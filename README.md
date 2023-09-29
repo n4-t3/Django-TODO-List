@@ -1,5 +1,7 @@
 # Django-TODO-List
 
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/n4-t3/Django-TODO-List/docker-ci.yml?event=push&style=for-the-badge&logo=githubactions&logoColor=white&label=CI&cacheSeconds=3600)
+
 Todo list with:
 
 - Backend and Authentication: **_Django_**
