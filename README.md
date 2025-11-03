@@ -9,7 +9,8 @@ Todo list with:
 
 ### Project Showcase
 
-[![Project Showcase](video/thumbnail.PNG)](video/showcase.mp4)
+https://github.com/user-attachments/assets/84ba5bef-4665-4b68-b5d6-256a3d634a8b
+
 
 ### How to Locally Run the Project
 
